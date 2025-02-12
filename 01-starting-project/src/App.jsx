@@ -24,6 +24,13 @@ import { useState } from "react";
  * 8. Crear una variable de estado para gestionar el cambio de tabs usar como valor 
  * inicial de la variable de estado "components" sino la página se rompe
  * EXAMPLES[selectedTab].title
+ *             <div id="tab-content">
+              <h3>{EXAMPLES[selectedTab].title}</h3>
+              <p>{EXAMPLES[selectedTab].description}</p>
+              <pre>
+                <code>{EXAMPLES[selectedTab].code}</code>
+              </pre>
+            </div>
  * 
  * 9. Renderización condicional useState valor inicial () y usamos el operador ternario
  * para hacer la renderización condicional. También podemos usar && o guardar el contenido
@@ -58,39 +65,15 @@ function App() {
         <section id="examples">
           <h2>Examples</h2>
           <menu>
-            {CORE_CONCEPTS.map((itemConcept, index) => (
+            {Object.entries(EXAMPLES).map(([key, _]) => (
               <TabButton
-                isSelected={selectedTab === itemConcept.title}
-                onClick={() => handleClick(itemConcept)}
-                key={index}
+                isSelected={selectedTab === key}
+                onClick={() => handleClick(key)}
+                key={key}
               >
-                {itemConcept.title}
+                {key}
               </TabButton>
             ))}
-            {/* <TabButton
-              isSelected={selectedTab === "components"}
-              onClick={() => handleClick("components")}
-            >
-              Components
-            </TabButton>
-            <TabButton
-              isSelected={selectedTab === "jsx"}
-              onClick={() => handleClick("jsx")}
-            >
-              JSX
-            </TabButton>
-            <TabButton
-              isSelected={selectedTab === "props"}
-              onClick={() => handleClick("props")}
-            >
-              Props
-            </TabButton>
-            <TabButton
-              isSelected={selectedTab === "state"}
-              onClick={() => handleClick("state")}
-            >
-              State
-            </TabButton> */}
           </menu>
           {selectedTab === undefined ? (
             <p>Please, select a topic</p>

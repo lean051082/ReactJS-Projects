@@ -4,13 +4,43 @@ import { CORE_CONCEPTS } from "./data";
 import TabButton from "./components/TabButton";
 
 /**
- *
- *
- * 4. Crear componente nuevo CoreConceps (li -> img, h2, p)
- *
- * 5. Obtener datos de CoreConcepts desde data.js
- *
- **/
+ * 
+ * 6. Crear el menu de botones, usar children para pasar los datos de App.jsx a TabButton
+ * y usar props para pasar como parámetro la función del click definida en App.jsx
+ *      <section id="examples">
+          <h2>Examples</h2>
+          <menu>
+            <TabButton onClick={handleClick}>Components</TabButton>
+            <TabButton onClick={handleClick}>JSX</TabButton>
+            <TabButton onClick={handleClick}>Props</TabButton>
+            <TabButton onClick={handleClick}>State</TabButton>
+          </menu>
+        </section>
+ * 
+ * 7. Pasar variables a una función handle
+ * 
+ * 8. Crear una variable de estado para gestionar el cambio de tabs usar como valor 
+ * inicial de la variable de estado "components" sino la página se rompe
+ * EXAMPLES[selectedTab].title
+ *             <div id="tab-content">
+              <h3>{EXAMPLES[selectedTab].title}</h3>
+              <p>{EXAMPLES[selectedTab].description}</p>
+              <pre>
+                <code>{EXAMPLES[selectedTab].code}</code>
+              </pre>
+            </div>
+ * 
+ * 9. Renderización condicional useState valor inicial () y usamos el operador ternario
+ * para hacer la renderización condicional. También podemos usar && o guardar el contenido
+ * en una variable normal y usar un if para sobreescribir el contenido
+ * 
+ * 10. Estilos condicionales: Usamos un operador ternario para poner la clase active si la variable isSelected es true
+ * le damos valor a isSelected desde App preguntando si selectedTab === al nombre del tab
+ * 
+ * Usamos map para generar código jsx dinámicamente
+ * 
+ * **/
+
 
 function App() {
   let selectedTab = "Click a button";
