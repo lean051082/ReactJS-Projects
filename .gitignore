@@ -1,1 +1,48 @@
 
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor/IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Build files
+/build/
+/dist/
+/.parcel-cache/
+/.next/
+/.nuxt/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# macOS files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Misc
+coverage/
+*.pem
+*.crt
+*.key
+
+# TypeScript
+*.tsbuildinfo
