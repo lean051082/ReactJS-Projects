@@ -1,7 +1,7 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { useState } from 'react';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
+import './App.css';
 
 function App() {
   const [rnd, setRnd] = useState(0);
@@ -9,12 +9,9 @@ function App() {
   const [maxRange, setMaxRange] = useState(100);
 
   const getRnd = () => {
-    console.log(`minRange:${minRange}`);
-    console.log(`maxRange:${maxRange}`);
     const newRnd = Math.floor(
       Math.random() * (maxRange - minRange + 1) + Number(minRange)
     );
-    console.log(`newRnd:${newRnd}`);
     setRnd(newRnd);
   };
 
