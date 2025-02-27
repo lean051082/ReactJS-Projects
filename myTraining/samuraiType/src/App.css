@@ -1,0 +1,157 @@
+/* Fuentes y colores generales */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+:root {
+  --bg-color: #121212;
+  --text-color: #ffffff;
+  --neon-green: #32ff7e;
+  --neon-red: #ff4d4d;
+  --primary-color: #00c3ff;
+  --secondary-color: #ff0080;
+}
+
+body {
+  font-family: 'Orbitron', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  text-align: center;
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  min-height: 100vh; /* Asegurar que cubra toda la pantalla */
+}
+
+/* 🎴 Header */
+header {
+  padding: 20px;
+  background: linear-gradient(
+    90deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+header img {
+  width: 150px;
+  height: auto;
+}
+
+h1 {
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  margin: 10px 0;
+  letter-spacing: 4px;
+  color: var(--neon-green);
+  text-shadow: 0px 0px 10px var(--neon-green);
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: var(--text-color);
+  opacity: 0.8;
+}
+
+/* 📌 Main */
+main {
+  padding: 30px;
+  max-width: 600px;
+  margin: auto;
+}
+
+/* 📝 Input de nombre */
+.input-container {
+  margin: 20px 0;
+}
+
+input[type='text'] {
+  padding: 12px;
+  font-size: 1.2rem;
+  border: 2px solid var(--primary-color);
+  background: transparent;
+  color: var(--text-color);
+  outline: none;
+  border-radius: 5px;
+  text-align: center;
+}
+
+input[type='text']::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* 🎮 Botón Start */
+button {
+  padding: 12px 20px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  background: var(--secondary-color);
+  transform: scale(1.1);
+}
+
+/* 🖋️ Frase a escribir */
+.phrase-container {
+  font-size: 1.5rem;
+  margin-top: 20px;
+  letter-spacing: 2px;
+  text-shadow: 0px 0px 5px var(--primary-color);
+}
+
+/* 📜 Estados de las letras */
+/* 🟢 No tecleada */
+.untyped {
+  color: var(--untyped-color);
+  transition: color 0.2s ease-in-out;
+}
+
+/* ✅ Letras correctas */
+.correct {
+  color: var(--neon-green);
+  text-shadow: 0px 0px 10px var(--neon-green);
+}
+
+/* ❌ Letras incorrectas */
+.wrong {
+  color: var(--neon-red);
+  text-shadow: 0px 0px 10px var(--neon-red);
+  animation: shake 0.3s ease-in-out;
+  display: inline-block;
+}
+
+/* 💥 Efecto de vibración al equivocarse */
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* 🔥 Texto motivacional */
+.motivation {
+  font-size: 1.2rem;
+  margin-top: 15px;
+  color: var(--secondary-color);
+  opacity: 0.8;
+}
