@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 function Temporizador({ limit = 10 }) {
   const [count, setCount] = useState(0);
@@ -12,6 +12,7 @@ function Temporizador({ limit = 10 }) {
         setCount((prevCount) =>
           prevCount + 1 >= limit + 1 ? 0 : prevCount + 1
         );
+        console.log('ewewe');
       }, 1000);
     }
 
@@ -30,7 +31,7 @@ function Temporizador({ limit = 10 }) {
     <div>
       <p>{count}</p>
       <button onClick={() => setCount(0)}>Reiniciar</button>
-      <button onClick={handlerPausa}>{pausa ? "Reanudar" : "Pausar"}</button>
+      <button onClick={handlerPausa}>{pausa ? 'Reanudar' : 'Pausar'}</button>
     </div>
   );
 }

@@ -1,23 +1,101 @@
 import { useRef, useState } from 'react';
-
+import { sortPlacesByDistance } from './loc.js';
 import Places from './components/Places.jsx';
 import { AVAILABLE_PLACES } from './data.js';
 import Modal from './components/Modal.jsx';
 import DeleteConfirmation from './components/DeleteConfirmation.jsx';
 import logoImg from './assets/logo.png';
+import { useEffect } from 'react';
+import { useCallback } from 'react';
+
+/**
+ *
+ * 1. Let's add to this app a new feature that consists of: the available places sorted by the user's current position.
+ * How can we do that?
+ * We can use the object navigator. This object exposed by the browser give us a function that allows us to get the
+ * current position by geolocalization.
+ * With this position we call the helper function sortPlacesByDistance to sort our array of available places
+ *
+ * 2. We need to create a state variable to save this information and use it to display the sorted array in the JSX, but...
+ * what happened with or application then? Infinite loop...
+ *
+ * 3. To solve this problem we can use the useEffect hook useEffect(() => {}, dependencies)
+ *
+ * 4. Now we want to persist our selected places array. To do this we can use another object from the browser (localStorage) and
+ * save in this localStorage and array of selectedPlaces Ids
+ *    4.1 get the array stored in localstorage
+ *        if the new Id isn't in this array then set the copy of the array plus de new Id
+ * Have we to do this new feature inside a useEffect hook?
+ *
+ * 5. When we delete a selected place from the list you have to do the same. In this case we don't need a useEffect either (is the same
+ * case as above)
+ *
+ * 6. Now we can get the info saved in the localStorage to populate our selected Places. Where we have to put this code? In an useEffect?
+ * Not in the useEffect but inside de component?
+ *
+ * 7. Another use of useEffect is to syncing with Browser API.
+ *    7.1 First we change the way we open and close the modal from imperative way to declarative
+ *        use a prop (open) on modal and a state (true/false) in app to manage the open/close
+ *        What happens now? We are missing the backdrop of the modal...
+ *
+ *        This occurs because the backdrop only is added if we open the modal with the function
+ *        showModal...
+ *
+ *    7.2 We can solve this problem with an if-else case just before the jsx to call the functions
+ *        showModal/close
+ *        Now the app crash because we try to access to dialog variable before the link between
+ *        the ref and the jsx...
+ *        We can syncing this using useEffect
+ *
+ * 8. Let's add some more features to our places app. We have to confirm to delete a selected place
+ * after 3 seconds. We can do it with SetTimeout but, what problem have implement this feature?
+ * In this case we can use another functionality of useEffect the clean up function, a function
+ * executed in the return statement of the use effect.
+ *
+ * 9. You have to be very careful with functions as a dependecies in useEffect, this sort
+ * of dependencies can create infinite loops. (onConfirm in DeleteConfirmation if you comment
+ * the line: setIsOpenModal(false); in the function handleRemovePlace).
+ *
+ * 10. The secure the possible function that can create an infinite loop you have to use another
+ * hook (useCallback) with this structure:
+ * const FunctionName = useCallback(FunctionName(){},[]);
+ *
+ * 11. Finally we implemented a progress bar to give some feedback to the user on why the
+ * modal closes automatically (setInterval)
+ */
+
+const idsArray = JSON.parse(localStorage.getItem('selectedValueIds')) || [];
+const selectedPlacesLocalStorage = idsArray.map((id) =>
+  AVAILABLE_PLACES.find((place) => place.id === id)
+);
 
 function App() {
   const modal = useRef();
   const selectedPlace = useRef();
-  const [pickedPlaces, setPickedPlaces] = useState([]);
+  const [pickedPlaces, setPickedPlaces] = useState(selectedPlacesLocalStorage);
+  const [sortedAvailablePlaces, setSortedAvailablePlaces] = useState([]);
+
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) =>
+      setSortedAvailablePlaces(
+        sortPlacesByDistance(
+          AVAILABLE_PLACES,
+          position.coords.latitude,
+          position.coords.longitude
+        )
+      )
+    );
+  }, []);
 
   function handleStartRemovePlace(id) {
-    modal.current.open();
+    setIsOpenModal(true);
     selectedPlace.current = id;
   }
 
   function handleStopRemovePlace() {
-    modal.current.close();
+    setIsOpenModal(false);
   }
 
   function handleSelectPlace(id) {
@@ -28,18 +106,40 @@ function App() {
       const place = AVAILABLE_PLACES.find((place) => place.id === id);
       return [place, ...prevPickedPlaces];
     });
+
+    const selectedIds =
+      JSON.parse(localStorage.getItem('selectedValueIds')) || [];
+
+    if (!selectedIds.find((myId) => myId === id)) {
+      localStorage.setItem(
+        'selectedValueIds',
+        JSON.stringify([id, ...selectedIds])
+      );
+    }
+
+    console.log(selectedIds);
   }
 
-  function handleRemovePlace() {
+  const handleRemovePlace = useCallback(function handleRemovePlace() {
     setPickedPlaces((prevPickedPlaces) =>
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
     );
-    modal.current.close();
-  }
+    setIsOpenModal(false);
+
+    const selectedIds =
+      JSON.parse(localStorage.getItem('selectedValueIds')) || [];
+
+    localStorage.setItem(
+      'selectedValueIds',
+      JSON.stringify(
+        selectedIds.filter((idValue) => idValue !== selectedPlace.current)
+      )
+    );
+  }, []);
 
   return (
     <>
-      <Modal ref={modal}>
+      <Modal isOpen={isOpenModal}>
         <DeleteConfirmation
           onCancel={handleStopRemovePlace}
           onConfirm={handleRemovePlace}
@@ -61,11 +161,15 @@ function App() {
           places={pickedPlaces}
           onSelectPlace={handleStartRemovePlace}
         />
-        <Places
-          title="Available Places"
-          places={AVAILABLE_PLACES}
-          onSelectPlace={handleSelectPlace}
-        />
+        {sortedAvailablePlaces ? (
+          <Places
+            title="Available Places"
+            places={sortedAvailablePlaces}
+            onSelectPlace={handleSelectPlace}
+          />
+        ) : (
+          'Sorting places...'
+        )}
       </main>
     </>
   );

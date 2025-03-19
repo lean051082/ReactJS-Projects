@@ -1,16 +1,16 @@
 import { useState } from 'react';
+import { KEYBOARD_KEYS } from '../constants/constants';
 
 export default function Player() {
   const [playerName, setPlayerName] = useState('');
   const [isEditMode, setIsEditMode] = useState(true);
 
   function changeHandler(e) {
-    console.log(e.target.value);
     setPlayerName(e.target.value);
   }
 
   function keyDownHandler(e) {
-    if (e.key === 'Enter') {
+    if (e.key === KEYBOARD_KEYS.KEY_ENTER) {
       setIsEditMode(false);
     }
   }
