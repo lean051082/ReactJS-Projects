@@ -1,11 +1,11 @@
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 
 import Places from './components/Places.jsx';
 import Modal from './components/Modal.jsx';
 import DeleteConfirmation from './components/DeleteConfirmation.jsx';
 import logoImg from './assets/logo.png';
 import AvailablePlaces from './components/AvailablePlaces.jsx';
-import { updateUserPlaces } from './services/api.js';
+import { getUserPlaces, updateUserPlaces } from './services/api.js';
 
 function App() {
   const selectedPlace = useRef();
@@ -13,6 +13,21 @@ function App() {
   const [userPlaces, setUserPlaces] = useState([]);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  useEffect(() => {
+    async function getUserPlacesAsync() {
+      try {
+        const dataPlaces = await getUserPlaces();
+        setUserPlaces(dataPlaces);
+      } catch (error) {
+        setMyError({
+          message: error.message || 'Error occurred fetching user places',
+        });
+      }
+    }
+
+    getUserPlacesAsync();
+  }, []);
 
   function handleStartRemovePlace(place) {
     setModalIsOpen(true);
@@ -24,6 +39,7 @@ function App() {
   }
 
   async function handleSelectPlace(selectedPlace) {
+    //Optimistic update
     setUserPlaces((prevPickedPlaces) => {
       if (!prevPickedPlaces) {
         prevPickedPlaces = [];
@@ -36,13 +52,23 @@ function App() {
 
     try {
       await updateUserPlaces([selectedPlace, ...userPlaces]);
-    } catch (error) {}
+    } catch (error) {
+      setUserPlaces(userPlaces);
+    }
   }
 
   const handleRemovePlace = useCallback(async function handleRemovePlace() {
     setUserPlaces((prevPickedPlaces) =>
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current.id)
     );
+
+    try {
+      await updateUserPlaces(
+        userPlaces.filter((place) => place.id !== selectedPlace.current.id)
+      );
+    } catch (error) {
+      setUserPlaces(userPlaces);
+    }
 
     setModalIsOpen(false);
   }, []);

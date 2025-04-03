@@ -1,0 +1,39 @@
+{
+  "opinions": [
+    {
+      "id": 1743510732955,
+      "votes": 4,
+      "userName": "adfadsfasdf",
+      "title": "  fgbybtbdtrvdsrv",
+      "body": "sdrvsrdvsrdvsrvsregvserfgser"
+    },
+    {
+      "id": 1743510533810,
+      "votes": 4,
+      "userName": "asdfads",
+      "title": "sdfasf",
+      "body": "zsdfasfadsfasdfadsfa"
+    },
+    {
+      "id": 1743510407882,
+      "votes": 2,
+      "userName": "Leandro",
+      "title": "You have to invclude IA on your lectures",
+      "body": "With ChatGPT, Gemini, Deepseek and more you have to include this technologies in your classes"
+    },
+    {
+      "id": 1,
+      "userName": "Maximilian Schwarzmüller",
+      "title": "Do yourself a favor and learn React!",
+      "body": "React is an amazing JavaScript library!\n\nDespite all it's shortcomings.",
+      "votes": 1
+    },
+    {
+      "id": 2,
+      "userName": "Maximilian Schwarzmüller",
+      "title": "React has more depth than you might first think!",
+      "body": "React is a great library to learn, but it's not just about the basics. Dive deeper!\nFor example with this course!",
+      "votes": 0
+    }
+  ]
+}

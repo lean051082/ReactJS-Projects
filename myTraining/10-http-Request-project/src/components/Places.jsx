@@ -6,7 +6,6 @@ export default function Places({
   isLoading,
   isLoadintText,
 }) {
-  console.log(places);
   return (
     <section className="places-category">
       <h2>{title}</h2>

@@ -25,7 +25,6 @@ export default function AvailablePlaces({ onSelectPlace }) {
           setIsFetching(false);
         });
       } catch (error) {
-        console.log(error);
         setMyError({
           message: error.message || 'Error occurred fetching places',
         });

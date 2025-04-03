@@ -10,12 +10,23 @@ export async function getPlaces() {
   return data.places;
 }
 
+export async function getUserPlaces() {
+  const response = await fetch(API_URL + 'user-places');
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error('Error fetching places');
+  }
+
+  return data.places;
+}
+
 export async function updateUserPlaces(userplaces) {
+  console.log(userplaces);
   const response = await fetch(API_URL + 'user-places', {
     method: 'PUT',
     body: JSON.stringify({ places: userplaces }),
     headers: {
-      'content-Type': 'application/json',
+      'Content-Type': 'application/json',
     },
   });
   const data = await response.json();
